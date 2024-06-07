@@ -13,6 +13,7 @@
     "incremental": true,
     "paths": {
       "@app/*": ["./src/*"]
-    }
+    },
+    "typeRoots": ["node_modules/@types"]
   }
 }

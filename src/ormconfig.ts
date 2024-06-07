@@ -4,9 +4,9 @@ const config: ConnectionOptions = {
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'rosmost',
+  username: 'postgres',
   password: '123',
-  database: 'rosmost',
+  database: 'postgres',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: false, // true дает возможность при запуске создавать таблицы данных если их нет в бд
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'], // ооткуда будет запуск миграций

@@ -19,7 +19,6 @@ import { UserProductEntity } from '@app/userProduct/userProduct.entity';
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
   @Column()
   username: string;
 
@@ -34,6 +33,12 @@ export class UserEntity {
 
   @Column({ select: false })
   password: string;
+
+  @Column({ default: '' })
+  passportSeries: string;
+
+  @Column({ default: '' })
+  passportCode: string;
 
   @Column({ nullable: true }) // Добавлено поле для хранения basketId
   basketId: number;

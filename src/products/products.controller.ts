@@ -38,7 +38,7 @@ export class ProductsController {
     return this.productsService.buildProductsResponse(products);
   }
 
-  @Get('purchased')
+  @Get('')
   @UseGuards(AuthGuard)
   async findAllPurchased(
     @User('id') idUser: number,

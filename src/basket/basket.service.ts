@@ -49,17 +49,14 @@ export class BasketService {
 
   async addProductToBasket(userId: number, productId: number) {
     const basket = await this.createBasketForUser(userId);
-    const originalProduct = await this.productsRepository.findOne(productId);
-
+    const originalProduct = await this.productsRepository.findOne(productId); 
     if (!originalProduct) {
       throw new NotFoundException('Продукт не найден');
     }
-
     // Проверяем, был ли уже куплен этот продукт
     if (originalProduct.isPurchased) {
       throw new ConflictException('Продукт уже был куплен');
     }
-
     // Проверяем, есть ли уже такой продукт в корзине пользователя
     const existingProduct = basket.products.find(
       (p) => p.originalProductId === productId,
@@ -67,21 +64,20 @@ export class BasketService {
     if (existingProduct) {
       throw new ConflictException('Продукт уже находится в корзине');
     }
-
     // Клонируем продукт для пользователя
-    const product = new ProductsEntity();
-    product.title = originalProduct.title;
-    product.country = originalProduct.country;
-    product.cost = originalProduct.cost;
-    product.desc = originalProduct.desc;
-    product.tags = originalProduct.tags;
-    product.isInBasket = true;
-    product.basketId = basket.id;
-    product.originalProductId = originalProduct.id; // Связываем с оригинальным продуктом
-
-    basket.products.push(product);
-    await this.productsRepository.save(product);
-    return await this.basketRepository.save(basket);
+    const clonedProduct = new ProductsEntity();
+    clonedProduct.title = originalProduct.title;
+    clonedProduct.country = originalProduct.country;
+    clonedProduct.cost = originalProduct.cost;
+    clonedProduct.desc = originalProduct.desc;
+    clonedProduct.tags = originalProduct.tags;
+    clonedProduct.isInBasket = true;
+    clonedProduct.basketId = basket.id;
+    clonedProduct.originalProductId = originalProduct.id; // Связываем с оригинальным продуктом
+    basket.products.push(clonedProduct);
+    await this.productsRepository.save(clonedProduct); // Сохраняем клон продукта
+    await this.basketRepository.save(basket);
+    return basket;
   }
 
   // basket.service.ts
