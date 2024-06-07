@@ -28,7 +28,7 @@ export class ProductsEntity {
   cost: number;
 
   @Column()
-  desc: string;
+  description: string;
 
   @Column('simple-array', { nullable: true })
   tags: string[];

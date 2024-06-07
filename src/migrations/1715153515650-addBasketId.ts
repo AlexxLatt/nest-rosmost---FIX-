@@ -5,7 +5,7 @@ export class addBasketId1715153515650 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "products" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "country" character varying NOT NULL, "cost" integer NOT NULL, "desc" character varying NOT NULL, "tags" text, "isInBasket" boolean NOT NULL DEFAULT false, "isPurchased" boolean NOT NULL DEFAULT false, "basketId" integer, CONSTRAINT "PK_0806c755e0aca124e67c0cf6d7d" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "products" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "country" character varying NOT NULL, "cost" integer NOT NULL, "description" character varying NOT NULL, "tags" text, "isInBasket" boolean NOT NULL DEFAULT false, "isPurchased" boolean NOT NULL DEFAULT false, "basketId" integer, CONSTRAINT "PK_0806c755e0aca124e67c0cf6d7d" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "reviews" ("id" SERIAL NOT NULL, "slug" character varying NOT NULL, "rating" integer NOT NULL, "title" character varying NOT NULL, "description" character varying NOT NULL, "createAt" TIMESTAMP NOT NULL DEFAULT now(), "updateAt" TIMESTAMP NOT NULL DEFAULT now(), "favoritesCount" integer NOT NULL DEFAULT '0', "authorId" integer, "productId" integer, CONSTRAINT "PK_231ae565c273ee700b283f15c1d" PRIMARY KEY ("id"))`,

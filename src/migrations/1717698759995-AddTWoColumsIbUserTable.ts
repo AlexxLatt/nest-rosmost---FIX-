@@ -13,4 +13,4 @@ export class AddTWoColumsIbUserTable1717698759995 implements MigrationInterface 
         await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "passportSeries"`);
     }
 
-}
+} 

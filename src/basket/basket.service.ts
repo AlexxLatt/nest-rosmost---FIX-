@@ -11,6 +11,7 @@ import { ProductsEntity } from '@app/products/products.entity';
 import { UserEntity } from '@app/user/user.entity';
 import { UserProductEntity } from '@app/userProduct/userProduct.entity';
 import { BasketResponseInterface } from './types/basketResponse.interface';
+import { ProductsService } from '@app/products/products.service';
 
 @Injectable()
 export class BasketService {
@@ -49,7 +50,7 @@ export class BasketService {
 
   async addProductToBasket(userId: number, productId: number) {
     const basket = await this.createBasketForUser(userId);
-    const originalProduct = await this.productsRepository.findOne(productId); 
+    const originalProduct = await this.productsRepository.findOne(productId);
     if (!originalProduct) {
       throw new NotFoundException('Продукт не найден');
     }
@@ -69,14 +70,26 @@ export class BasketService {
     clonedProduct.title = originalProduct.title;
     clonedProduct.country = originalProduct.country;
     clonedProduct.cost = originalProduct.cost;
-    clonedProduct.desc = originalProduct.desc;
+    clonedProduct.description = originalProduct.description;
     clonedProduct.tags = originalProduct.tags;
     clonedProduct.isInBasket = true;
     clonedProduct.basketId = basket.id;
     clonedProduct.originalProductId = originalProduct.id; // Связываем с оригинальным продуктом
-    basket.products.push(clonedProduct);
     await this.productsRepository.save(clonedProduct); // Сохраняем клон продукта
+    basket.products.push(clonedProduct);
+    // Сохраняем корзину с клонированным продуктом
     await this.basketRepository.save(basket);
+    // Найти максимальный ID продукта в таблице продуктов
+    const maxIdResult = await this.productsRepository
+      .createQueryBuilder('product')
+      .select('MAX(product.id)', 'max')
+      .getRawOne();
+    const maxId = maxIdResult.max;
+    // Удаляем продукт с максимальным ID
+    const result = await this.productsRepository.delete(maxId);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Продукт с ID ${maxId} не найден`);
+    }
     return basket;
   }
 

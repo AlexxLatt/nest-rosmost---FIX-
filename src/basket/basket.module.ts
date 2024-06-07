@@ -7,6 +7,7 @@ import { ProductsEntity } from '@app/products/products.entity';
 import { UserEntity } from '@app/user/user.entity';
 import { UserService } from '@app/user/user.service';
 import { UserProductEntity } from '@app/userProduct/userProduct.entity';
+import { ProductsService } from '@app/products/products.service';
 
 @Module({
   controllers: [BasketController],
